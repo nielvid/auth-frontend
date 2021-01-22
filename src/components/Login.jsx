@@ -1,11 +1,26 @@
-import React from 'react'
+import React,{ useState} from 'react'
 import '../App.css';
 import styled from 'styled-components'
 import {Link } from "react-router-dom";
+import axios from 'axios'
 
 
 function Login() {
 
+    
+    const [email, setEmail] = useState("")
+    const [password, setPassword] = useState("")
+  
+
+const LoginUser = (e)=>{
+    e.preventDefault()
+    const user = {
+        email: email,
+       password:password
+     
+    }
+    axios.post('api/login', user).then(res => console.log(res.config.data)).catch(err => console.log(err))
+}
 
     return (
         <>
@@ -20,20 +35,20 @@ function Login() {
         <Box>
 <InputWrap>
     <i className="fa fa-envelope"></i>
-    <input type="email" className="email" name="email"  placeholder="E-mail"/>
+    <input type="email" className="email" name="email" value={email} onChange={(e)=>{setEmail(e.target.value)}} />
     </InputWrap>
 
     <InputWrap>
     
         <i className="fa fa-lock"></i>
-    <input type="password" className="password" name="password" placeholder="password"/>
+    <input type="password" className="password" name="password" value={password} onChange={(e)=>{setPassword(e.target.value)}}/>
         </InputWrap>  
 
     
         </Box>
 </Form>
 
-<Btn type="submit" onclick="getUser()"><a href="/"> Login</a></Btn>
+<Btn type="submit" onclick={LoginUser}> Login</Btn>
 <Paragraph>Don't have account? <Link to="/" className="link" style={{textDecoration: 'none',
     color: '#ffffff'}} >Sign up</Link> </Paragraph>
 

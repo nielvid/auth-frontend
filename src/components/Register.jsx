@@ -61,7 +61,7 @@ const RegisterUser = ()=>{
     
 </Form>
 
-<Btn type="submit" onClick={RegisterUser}><Link to="/login">Login</Link> </Btn>
+<Btn type="submit" onClick={RegisterUser}><Link to="/login">Sign up</Link> </Btn>
 <Paragraph>Already have account? <Link to="/login" className="link" style={{textDecoration: 'none',
     color: '#ffffff'}} >Login Instead</Link> </Paragraph>
 
