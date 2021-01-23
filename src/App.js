@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Route } from "react-router-dom";
+import {BrowserRouter, Switch, Route} from "react-router-dom";
 import './App.css';
 
 import HomePage from './components/HomePage';
@@ -15,9 +15,10 @@ function App() {
   return (
     <>
 
-    <Router>
-     
+    <BrowserRouter>
+      
   <Navbar />
+ <Switch>
       <Route exact path="/">
       <MyContext.Provider value={{ username: "ayosco001", email: 'ayosco001@gmail.com', password: 123456, telephone:"07076597056" }}>
       <Register />
@@ -31,8 +32,8 @@ function App() {
      <Route exact path="/home">
   <HomePage />
     </Route>
-
-     </Router>
+</Switch>
+     </BrowserRouter>
     
 
   </>

@@ -1,16 +1,20 @@
 import React,{ useState} from 'react'
 import '../App.css';
 import styled from 'styled-components'
-import {Link } from "react-router-dom";
+import {Link, useHistory} from "react-router-dom";
 import axios from 'axios'
 
 
 function Login() {
-
+ const history = useHistory() // hooks for redirection
     
+ if(localStorage.getItem('token')){
+  history.push('/home'); //redirect to login page
+}
+
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
-  
+  const [error, setError] = useState(null)
 
 const LoginUser = (e)=>{
     e.preventDefault()
@@ -19,7 +23,15 @@ const LoginUser = (e)=>{
        password:password
      
     }
-    axios.post('api/login', user).then(res => console.log(res.config.data)).catch(err => console.log(err))
+    axios.post('api/login', user).then((res) => {
+        console.log(res)
+        localStorage.setItem("token", res.data.token)
+        history.push('/home'); //redirect to login page
+        
+}).catch((err) =>{
+        console.log(err)
+        setError(err.response.data.error );
+    })
 }
 
     return (
@@ -47,8 +59,8 @@ const LoginUser = (e)=>{
     
         </Box>
 </Form>
-
-<Btn type="submit" onclick={LoginUser}> Login</Btn>
+{error ? <p style={{textAlign:'center', fontSize:'22px'}}>{error}</p> : null}
+<Btn type="submit" onClick={LoginUser}> Login</Btn>
 <Paragraph>Don't have account? <Link to="/" className="link" style={{textDecoration: 'none',
     color: '#ffffff'}} >Sign up</Link> </Paragraph>
 

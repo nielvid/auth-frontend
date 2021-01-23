@@ -1,8 +1,18 @@
 import React from 'react'
 import styled from 'styled-components'
-import {Link } from "react-router-dom";
+import {Link,  useHistory } from "react-router-dom";
+
 
 function Navbar() {
+
+     const history = useHistory() // hooks for redirection
+
+ const Logout = ()=>{
+    localStorage.removeItem('token')
+  history.push('/login'); //redirect to login page
+  }
+
+
     return (
         <Wrapper>
             <Nav>
@@ -11,6 +21,7 @@ function Navbar() {
      <Link to="/" className="navbar-nav">Register</Link>
       <Link to="/login" className="navbar-nav">Login</Link>
       <Link to="/home" className="navbar-nav">Dashboard</Link>
+      <button type='button' onClick={Logout}>Logout</button>
     </Menu>
             </Nav>
             </Wrapper>

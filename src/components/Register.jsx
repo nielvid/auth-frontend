@@ -1,12 +1,13 @@
 import React, {useContext , useState} from 'react'
 import '../App.css';
 import styled from 'styled-components'
-import {Link } from "react-router-dom";
+import {Link,  useHistory } from 'react-router-dom'; 
 import {MyContext}from '../App'
 import axios from 'axios'
 
 
-function Register(props) {
+function Register() {
+   const history = useHistory() // hooks for redirection
 
     const user = useContext(MyContext)
 
@@ -14,8 +15,10 @@ function Register(props) {
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
     const [tel, setTel] = useState("")
+    const [error, setError] = useState(null)
 
-const RegisterUser = ()=>{
+const RegisterUser = async (e)=>{
+    e.preventDefault()
     const user = {
         
         username: username,
@@ -23,9 +26,18 @@ const RegisterUser = ()=>{
        password:password,
         tel: tel
     }
-    axios.post('api/newuser', user).then(res => console.log(res.config.data)).catch(err => console.log(err))
-}
+    try{
+         
+         await axios.post('api/newuser', user);
+        
+    
+          history.push('/login'); //redirect to login page
 
+    }catch(err){
+         console.log(err)
+          setError(err.response.data.error );
+}
+}
     return (
         <>
         <p>{user.name}</p>
@@ -60,8 +72,8 @@ const RegisterUser = ()=>{
         </Box>
     
 </Form>
-
-<Btn type="submit" onClick={RegisterUser}><Link to="/login">Sign up</Link> </Btn>
+{error ? <p style={{textAlign:'center', fontSize:'22px'}}>{error}</p> : null}
+<Btn type="submit" onClick={RegisterUser}>Sign up</Btn>
 <Paragraph>Already have account? <Link to="/login" className="link" style={{textDecoration: 'none',
     color: '#ffffff'}} >Login Instead</Link> </Paragraph>
 

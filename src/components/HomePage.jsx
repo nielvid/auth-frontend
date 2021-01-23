@@ -1,23 +1,32 @@
 import React, { useState } from 'react'
 import axios from 'axios'
 import styled from 'styled-components'
+import { useHistory} from "react-router-dom";
 
 function HomePage() {
   var [students, setStudents] = useState(null)
    
+ const history = useHistory() // hooks for redirection
 
-
-
+if(!localStorage.getItem('token')){
+  history.push('/login'); //redirect to login page
+}
 
   const getData = () => {
     axios
-      .get('api/students')
+      .get('api/students',{
+        Header:{
+          Authorization: `Bearer ${localStorage.getItem('token')}`
+        }
+      })
       .then((res) => {
         console.log(res.data)
         setStudents(res.data)
       })
       .catch((err) => console.log(err))
   }
+
+
   return (
     <>
       <Header>This is a Full-Stack Application</Header>
